@@ -1,6 +1,6 @@
 {
-    "name": "webapp",
-    "short_name": "webapp",
+    "name": "draggable_final",
+    "short_name": "draggable_final",
     "start_url": ".",
     "display": "minimal-ui",
     "background_color": "#0175C2",

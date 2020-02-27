@@ -1,4 +1,4 @@
-name: web_firebase
+name: draggable
 description: A new Flutter project.
 
 version: 1.0.0+1
@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.2
   firebase_core: ^0.4.3+3
+  firebase: ^7.2.1
 
 dev_dependencies:
   flutter_test:

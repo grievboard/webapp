@@ -10,9 +10,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('GrievBoard'),
-          actions: <Widget>[
+      appBar: AppBar(
+        title: Text('GrievBoard'),
+        actions: <Widget>[
             Center(
               child: Wrap(
                 children: <Widget>[
@@ -22,8 +22,8 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-          ],
-        )
+        ],
+      )
     );
   }
 }

@@ -8,54 +8,26 @@ class DragTry extends StatefulWidget {
 }
 
 class _DragTryState extends State<DragTry> {
-
-  var _firestore = fireBase.firestore();
-  final List notAcknowledged = ['problem1'];
-  final List acknowledged = [];
-  final List completed = [];
-  var acknowledgedData1, acknowledgedData2;
-  var dragStatus;
-
-//  void getData() async{
-//    final messages = await _firestore.collection('users').getDocuments();
-//    for(var message in messages.documents){
-//      notAcknowledged.add(message.data['displayName']);
-//    }
-//  }
-
-//  getData() async{
-//    var data1 = await _firestore.collection('users').get();
-//    for(var i=0; i<data1.size;i++){
-//      //print(data1.docs[i].get('description'));
-//      notAcknowledged.add(data1.docs[i].get('displayName'));
-//      print(data1.docs[i].get('displayName'));
-//      print(notAcknowledged);
-//    }
-//    print(data1.getString())
-//  }
-
   @override
   void initState() {
     super.initState();
     getData();
   }
 
-//  void getMessages() async{
-//    await for(var data in _firestore.collection('users').snapshots()){
-//      for(var message in data.documents){
-//        print(message.data);
-//        notAcknowledged.add(message.data);
-//      }
-//    }
-//  }
-
-  Future getData() async{
-    var data1 = await _firestore.collection('users').get();
-    for(var i=0; i<data1.size;i++){
-      //print(data1.docs[i].get('displayName'));
+  Future getData() async {
+    var data1 = await _fireStore.collection('users').get();
+    for (var i = 0; i < data1.size; i++) {
       notAcknowledged.add(data1.docs[i].get('displayName'));
     }
+    setState(() {});
   }
+
+  var _fireStore = fireBase.firestore();
+  final List notAcknowledged = [];
+  final List acknowledged = [];
+  final List completed = [];
+  var acknowledgedData1, acknowledgedData2;
+  var dragStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +40,7 @@ class _DragTryState extends State<DragTry> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(70.0,110.0,70.0,110.0),
+            margin: EdgeInsets.fromLTRB(70.0, 110.0, 70.0, 110.0),
             height: 500.0,
             width: 292.0,
             child: Card(
@@ -84,7 +56,38 @@ class _DragTryState extends State<DragTry> {
                       itemBuilder: (context, index) {
                         return Draggable(
                           child: Container(
-                            child: Text('${notAcknowledged[index]}'),
+                            child: RaisedButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  child: AlertDialog(
+                                    title: Text('${notAcknowledged[index]}'),
+                                    content: Wrap(
+                                      direction: Axis.vertical,
+                                      children: <Widget>[
+                                        Text("Hello World"),
+                                        Text("Hello World"),
+                                        Text("Hello World"),
+                                        Text("Hello World"),
+                                        Text("Hello World"),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      RaisedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        color: Colors.yellow,
+                                        child: Text('Close'),
+                                      )
+                                    ],
+                                  ),
+                                  barrierDismissible: false,
+                                );
+                              },
+                              color: Colors.white,
+                              child: Text('${notAcknowledged[index]}'),
+                            ),
                             padding: EdgeInsets.all(20.0),
                           ),
                           feedback: Material(
@@ -97,7 +100,7 @@ class _DragTryState extends State<DragTry> {
                             ),
                           ),
                           childWhenDragging: Container(),
-                          onDragStarted: (){
+                          onDragStarted: () {
                             acknowledgedData1 = notAcknowledged[index];
                             dragStatus = 'notAcknowledged';
                           },
@@ -110,7 +113,7 @@ class _DragTryState extends State<DragTry> {
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(70.0,110.0,70.0,110.0),
+            margin: EdgeInsets.fromLTRB(70.0, 110.0, 70.0, 110.0),
             width: 292.0,
             height: 500.0,
             child: Card(
@@ -121,49 +124,77 @@ class _DragTryState extends State<DragTry> {
                   Container(
                     height: 470,
                     child: DragTarget(
-                        builder: (context, candidateData, rejectedData) {
-                          return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: acknowledged.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Draggable(
-                                child: Container(
+                      builder: (context, candidateData, rejectedData) {
+                        return ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: acknowledged.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Draggable(
+                              child: Container(
+                                margin: EdgeInsets.all(10.0),
+                                child: RaisedButton(
+                                  onPressed: () {
+                                    {
+                                      showDialog(
+                                        context: context,
+                                        child: AlertDialog(
+                                          title: Text('${acknowledged[index]}'),
+                                          content: Wrap(
+                                            direction: Axis.vertical,
+                                            children: <Widget>[
+                                              Text("Hello World"),
+                                            ],
+                                          ),
+                                          actions: <Widget>[
+                                            RaisedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              color: Colors.yellow,
+                                              child: Text('Close'),
+                                            )
+                                          ],
+                                        ),
+                                        barrierDismissible: false,
+                                      );
+                                    }
+                                  },
                                   child: Text('${acknowledged[index]}'),
-                                  margin: EdgeInsets.all(10.0),
                                   color: Colors.white,
                                   padding: EdgeInsets.all(10.0),
                                 ),
-                                feedback: Material(
-                                  elevation: 5.0,
-                                  child: Container(
-                                    width: 284.0,
-                                    padding: const EdgeInsets.all(16.0),
-                                    color: Colors.yellow,
-                                    child: Text('${acknowledged[index]}'),
-                                  ),
+                              ),
+                              feedback: Material(
+                                elevation: 5.0,
+                                child: Container(
+                                  width: 284.0,
+                                  padding: const EdgeInsets.all(16.0),
+                                  color: Colors.yellow,
+                                  child: Text('${acknowledged[index]}'),
                                 ),
-                                onDragStarted: (){
-                                  acknowledgedData2 = acknowledged[index];
-                                  dragStatus = 'acknowledged';
-                                },
-                              );
-                            },
-                          );
-                        },
-                        onAccept: (data) {
-                          acknowledged.add(acknowledgedData1);
-                          notAcknowledged.remove(acknowledgedData1);
-                          setState((){});
-                        },
-                      ),
+                              ),
+                              onDragStarted: () {
+                                acknowledgedData2 = acknowledged[index];
+                                dragStatus = 'acknowledged';
+                              },
+                            );
+                          },
+                        );
+                      },
+                      onAccept: (data) {
+                        acknowledged.add(acknowledgedData1);
+                        notAcknowledged.remove(acknowledgedData1);
+                        setState(() {});
+                      },
+                    ),
                   )
                 ],
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(70.0,110.0,70.0,110.0),
+            margin: EdgeInsets.fromLTRB(70.0, 110.0, 70.0, 110.0),
             width: 292.0,
             height: 500.0,
             child: Card(
@@ -181,24 +212,39 @@ class _DragTryState extends State<DragTry> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Container(
-                              child: Text('${completed[index]}'),
                               margin: EdgeInsets.all(10.0),
-                              color: Colors.white,
-                              padding: EdgeInsets.all(10.0),
+                              child: RaisedButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    child: AlertDialog(
+                                      title: Text('${acknowledged[index]}'),
+                                      content: Wrap(
+                                        direction: Axis.vertical,
+                                        children: <Widget>[
+                                          Text("Hello World"),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text('${completed[index]}'),
+                                color: Colors.white,
+                                padding: EdgeInsets.all(10.0),
+                              ),
                             );
                           },
                         );
                       },
                       onAccept: (data) {
-                        if(dragStatus=='notAcknowledged'){
+                        if (dragStatus == 'notAcknowledged') {
                           completed.add(acknowledgedData1);
                           notAcknowledged.remove(acknowledgedData1);
-                        }
-                        else{
+                        } else {
                           completed.add(acknowledgedData2);
                           acknowledged.remove(acknowledgedData2);
                         }
-                        setState((){});
+                        setState(() {});
                         print("hello");
                         return null;
                       },

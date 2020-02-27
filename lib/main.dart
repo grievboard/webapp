@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:draggable/drag_try.dart';
+import 'drag_try.dart';
 import 'package:firebase/firebase.dart' as Firebase;
+import 'login.dart';
 
 Future<void> main() async {
   if (Firebase.apps.isEmpty) {

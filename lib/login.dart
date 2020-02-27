@@ -1,17 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          gradient:
-              LinearGradient(colors: [Color(0xFFF8FBFF), Color(0xFFFCFDFD)])),
-      child: SingleChildScrollView(
-        child: Container(
-          child: Column(),
-        ),
-      ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('GrievBoard'),
+          actions: <Widget>[
+            Center(
+              child: Wrap(
+                children: <Widget>[
+                  Text('About'),
+                  Text('Home'),
+                  Text('Contact Us')
+                ],
+              ),
+            ),
+          ],
+        )
     );
   }
 }

@@ -15,10 +15,13 @@ class _DragTryState extends State<DragTry> {
   }
 
   Future getData() async {
-    var data1 = await _fireStore.collection('users').get();
-    for (var i = 0; i < data1.size; i++) {
-      notAcknowledged.add(data1.docs[i].get('displayName'));
-    }
+    var data1 = await _fireStore
+        .collection('posts')
+        .doc('103575341949204712387')
+        .collection('userPosts')
+        .get();
+    for (var i = 0; i < data1.size; i++)
+      notAcknowledged.add(data1.docs[i].get('username'));
     setState(() {});
   }
 
@@ -65,10 +68,6 @@ class _DragTryState extends State<DragTry> {
                                     content: Wrap(
                                       direction: Axis.vertical,
                                       children: <Widget>[
-                                        Text("Hello World"),
-                                        Text("Hello World"),
-                                        Text("Hello World"),
-                                        Text("Hello World"),
                                         Text("Hello World"),
                                       ],
                                     ),
@@ -213,25 +212,9 @@ class _DragTryState extends State<DragTry> {
                           itemBuilder: (context, index) {
                             return Container(
                               margin: EdgeInsets.all(10.0),
-                              child: RaisedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    child: AlertDialog(
-                                      title: Text('${acknowledged[index]}'),
-                                      content: Wrap(
-                                        direction: Axis.vertical,
-                                        children: <Widget>[
-                                          Text("Hello World"),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text('${completed[index]}'),
-                                color: Colors.white,
-                                padding: EdgeInsets.all(10.0),
-                              ),
+                              child: Text('${completed[index]}'),
+                              color: Colors.white,
+                              padding: EdgeInsets.all(10.0),
                             );
                           },
                         );

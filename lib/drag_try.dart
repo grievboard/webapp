@@ -185,6 +185,33 @@ class _DragTryState extends State<DragTry> {
                         acknowledged.add(acknowledgedData1);
                         notAcknowledged.remove(acknowledgedData1);
                         setState(() {});
+                        showDialog(
+                          context: context,
+                          child: AlertDialog(
+                            content: Wrap(
+                              children: <Widget>[
+                                TextField(
+                                  decoration: InputDecoration(
+                                      labelText: 'GPOC Name'
+                                  ),
+                                ),
+                                TextField(
+                                  decoration: InputDecoration(
+                                      labelText: 'GPOC Number'
+                                  ),
+                                ),
+                              ],
+                            ),
+                            actions: <Widget>[
+                              RaisedButton(
+                                onPressed: () {},
+                                color: Colors.yellow,
+                                child: Text('Post='),
+                              )
+                            ],
+                          ),
+                          barrierDismissible: false,
+                        );
                       },
                     ),
                   )

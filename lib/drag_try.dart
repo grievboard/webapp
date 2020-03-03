@@ -212,9 +212,37 @@ class _DragTryState extends State<DragTry> {
                           itemBuilder: (context, index) {
                             return Container(
                               margin: EdgeInsets.all(10.0),
-                              child: Text('${completed[index]}'),
-                              color: Colors.white,
-                              padding: EdgeInsets.all(10.0),
+                              child: RaisedButton(
+                                onPressed: () {
+                                  {
+                                    showDialog(
+                                      context: context,
+                                      child: AlertDialog(
+                                        title: Text('${completed[index]}'),
+                                        content: Wrap(
+                                          direction: Axis.vertical,
+                                          children: <Widget>[
+                                            Text("Hello World"),
+                                          ],
+                                        ),
+                                        actions: <Widget>[
+                                          RaisedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            color: Colors.yellow,
+                                            child: Text('Close'),
+                                          )
+                                        ],
+                                      ),
+                                      barrierDismissible: false,
+                                    );
+                                  }
+                                },
+                                child: Text('${completed[index]}'),
+                                color: Colors.white,
+                                padding: EdgeInsets.all(10.0),
+                              ),
                             );
                           },
                         );

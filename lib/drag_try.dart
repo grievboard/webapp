@@ -31,7 +31,21 @@ class _DragTryState extends State<DragTry> {
   final myController = TextEditingController();
   final myController1 = TextEditingController();
   var _fireStore = fireBase.firestore();
-  final List notAcknowledged = [];
+  final List notAcknowledged = [
+    'problem1',
+    'problem2',
+    'problem3',
+    'problem4',
+    'problem15',
+    'problem16',
+    'problem17',
+    'problem18',
+    'problem19',
+    'problem10',
+    'problem11',
+    'problem12',
+    'problem13'
+  ];
   final List description = [];
   final List location = [];
   final List acknowledged = [];
@@ -50,100 +64,95 @@ class _DragTryState extends State<DragTry> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
+            color: Color(0xFF030423),
             margin: EdgeInsets.fromLTRB(70.0, 110.0, 70.0, 110.0),
             height: 500.0,
             width: 292.0,
-            child: Card(
-              color: Color(0xFF030423),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: notAcknowledged.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Draggable(
-                          child: Container(
-                            child: RaisedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  child: AlertDialog(
-                                    title: Text('${notAcknowledged[index]}'),
-                                    content: Wrap(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: notAcknowledged.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Draggable(
+                  child: Container(
+                    child: RaisedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          child: AlertDialog(
+                            title: Text('${notAcknowledged[index]}'),
+                            content: Wrap(
+                              direction: Axis.vertical,
+                              children: <Widget>[
+                                Card(
+                                  color: Color(0xFFFBFBFB),
+                                  child: Padding(
+                                    child: Wrap(
                                       direction: Axis.vertical,
                                       children: <Widget>[
-                                        Card(
-                                          color: Color(0xFFFBFBFB),
-                                          child: Padding(
-                                            child: Wrap(
-                                              direction: Axis.vertical,
-                                              children: <Widget>[
-                                                Text("Description"),
-                                                SizedBox(height: 10.0,),
-                                                Text('${description[index]}'),
-                                              ],
-                                            ),
-                                            padding: EdgeInsets.all(5.0),
-                                          ),
+                                        Text("Description"),
+                                        SizedBox(
+                                          height: 10.0,
                                         ),
-                                        Card(
-                                          color: Color(0xFFFBFBFB),
-                                          child: Padding(
-                                            child: Wrap(
-                                              direction: Axis.vertical,
-                                              children: <Widget>[
-                                                Text("Location"),
-                                                SizedBox(height: 10.0,),
-                                                Text('${location[index]}'),
-                                              ],
-                                            ),
-                                            padding: EdgeInsets.all(5.0),
-                                          ),
-                                        ),
+                                        Text('${description[index]}'),
                                       ],
                                     ),
-                                    actions: <Widget>[
-                                      RaisedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        color: Color(0xFF030423),
-                                        textColor: Colors.white,
-                                        child: Text('Close'),
-                                      )
-                                    ],
+                                    padding: EdgeInsets.all(5.0),
                                   ),
-                                  barrierDismissible: false,
-                                );
-                              },
-                              color: Colors.white,
-                              child: Text('${notAcknowledged[index]}'),
+                                ),
+                                Card(
+                                  color: Color(0xFFFBFBFB),
+                                  child: Padding(
+                                    child: Wrap(
+                                      direction: Axis.vertical,
+                                      children: <Widget>[
+                                        Text("Location"),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Text('${location[index]}'),
+                                      ],
+                                    ),
+                                    padding: EdgeInsets.all(5.0),
+                                  ),
+                                ),
+                              ],
                             ),
-                            padding: EdgeInsets.all(20.0),
+                            actions: <Widget>[
+                              RaisedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                color: Color(0xFF030423),
+                                textColor: Colors.white,
+                                child: Text('Close'),
+                              )
+                            ],
                           ),
-                          feedback: Material(
-                            elevation: 5.0,
-                            child: Container(
-                              width: 284.0,
-                              padding: const EdgeInsets.all(16.0),
-                              color: Colors.yellow,
-                              child: Text(notAcknowledged[index]),
-                            ),
-                          ),
-                          childWhenDragging: Container(),
-                          onDragStarted: () {
-                            acknowledgedData1 = notAcknowledged[index];
-                            dragStatus = 'notAcknowledged';
-                          },
+                          barrierDismissible: false,
                         );
                       },
+                      color: Colors.white,
+                      child: Text('${notAcknowledged[index]}'),
                     ),
-                  )
-                ],
-              ),
+                    padding: EdgeInsets.all(20.0),
+                  ),
+                  feedback: Material(
+                    elevation: 5.0,
+                    child: Container(
+                      width: 284.0,
+                      padding: const EdgeInsets.all(16.0),
+                      color: Colors.yellow,
+                      child: Text(notAcknowledged[index]),
+                    ),
+                  ),
+                  childWhenDragging: Container(),
+                  onDragStarted: () {
+                    acknowledgedData1 = notAcknowledged[index];
+                    dragStatus = 'notAcknowledged';
+                  },
+                );
+              },
             ),
           ),
           Container(
@@ -217,42 +226,40 @@ class _DragTryState extends State<DragTry> {
                         );
                       },
                       onAccept: (data) {
-                        if(!acknowledged.contains(acknowledgedData1)){
+                        if (!acknowledged.contains(acknowledgedData1)) {
                           acknowledged.add(acknowledgedData1);
                           notAcknowledged.remove(acknowledgedData1);
                           setState(() {});
                           showDialog(
-                              context: context,
-                              child: AlertDialog(
-                                content: Wrap(
-                                  children: <Widget>[
-                                    TextField(
-                                      decoration: InputDecoration(
-                                          labelText: 'GPOC Name'
-                                      ),
-                                      controller: myController,
-                                    ),
-                                    TextField(
-                                      decoration: InputDecoration(
-                                          labelText: 'GPOC Number'
-                                      ),
-                                      controller: myController1,
-                                    ),
-                                  ],
-                                ),
-                                actions: <Widget>[
-                                  RaisedButton(
-                                    onPressed: () {
-                                      final gpocName = myController.text;
-                                      final gpocContact = myController1.text;
-                                      Navigator.pop(context);
-                                    },
-                                    color: Colors.yellow,
-                                    child: Text('close'),
-                                  )
+                            context: context,
+                            child: AlertDialog(
+                              content: Wrap(
+                                children: <Widget>[
+                                  TextField(
+                                    decoration:
+                                        InputDecoration(labelText: 'GPOC Name'),
+                                    controller: myController,
+                                  ),
+                                  TextField(
+                                    decoration: InputDecoration(
+                                        labelText: 'GPOC Number'),
+                                    controller: myController1,
+                                  ),
                                 ],
                               ),
-                              barrierDismissible: false,
+                              actions: <Widget>[
+                                RaisedButton(
+                                  onPressed: () {
+                                    final gpocName = myController.text;
+                                    final gpocContact = myController1.text;
+                                    Navigator.pop(context);
+                                  },
+                                  color: Colors.yellow,
+                                  child: Text('close'),
+                                )
+                              ],
+                            ),
+                            barrierDismissible: false,
                           );
                         }
                       },

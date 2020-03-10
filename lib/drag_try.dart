@@ -20,13 +20,20 @@ class _DragTryState extends State<DragTry> {
         .doc('103575341949204712387')
         .collection('userPosts')
         .get();
-    for (var i = 0; i < data1.size; i++)
+    for (var i = 0; i < data1.size; i++) {
       notAcknowledged.add(data1.docs[i].get('username'));
+      description.add(data1.docs[i].get('description'));
+      location.add(data1.docs[i].get('location'));
+    }
     setState(() {});
   }
 
+  final myController = TextEditingController();
+  final myController1 = TextEditingController();
   var _fireStore = fireBase.firestore();
   final List notAcknowledged = [];
+  final List description = [];
+  final List location = [];
   final List acknowledged = [];
   final List completed = [];
   var acknowledgedData1, acknowledgedData2;
@@ -47,7 +54,7 @@ class _DragTryState extends State<DragTry> {
             height: 500.0,
             width: 292.0,
             child: Card(
-              color: Color(0xffE5F2F1),
+              color: Color(0xFF030423),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -68,7 +75,34 @@ class _DragTryState extends State<DragTry> {
                                     content: Wrap(
                                       direction: Axis.vertical,
                                       children: <Widget>[
-                                        Text("Hello World"),
+                                        Card(
+                                          color: Color(0xFFFBFBFB),
+                                          child: Padding(
+                                            child: Wrap(
+                                              direction: Axis.vertical,
+                                              children: <Widget>[
+                                                Text("Description"),
+                                                SizedBox(height: 10.0,),
+                                                Text('${description[index]}'),
+                                              ],
+                                            ),
+                                            padding: EdgeInsets.all(5.0),
+                                          ),
+                                        ),
+                                        Card(
+                                          color: Color(0xFFFBFBFB),
+                                          child: Padding(
+                                            child: Wrap(
+                                              direction: Axis.vertical,
+                                              children: <Widget>[
+                                                Text("Location"),
+                                                SizedBox(height: 10.0,),
+                                                Text('${location[index]}'),
+                                              ],
+                                            ),
+                                            padding: EdgeInsets.all(5.0),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     actions: <Widget>[
@@ -76,7 +110,8 @@ class _DragTryState extends State<DragTry> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        color: Colors.yellow,
+                                        color: Color(0xFF030423),
+                                        textColor: Colors.white,
                                         child: Text('Close'),
                                       )
                                     ],
@@ -116,7 +151,7 @@ class _DragTryState extends State<DragTry> {
             width: 292.0,
             height: 500.0,
             child: Card(
-              color: Color(0xffE5F2F1),
+              color: Color(0xFF030423),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -182,36 +217,44 @@ class _DragTryState extends State<DragTry> {
                         );
                       },
                       onAccept: (data) {
-                        acknowledged.add(acknowledgedData1);
-                        notAcknowledged.remove(acknowledgedData1);
-                        setState(() {});
-                        showDialog(
-                          context: context,
-                          child: AlertDialog(
-                            content: Wrap(
-                              children: <Widget>[
-                                TextField(
-                                  decoration: InputDecoration(
-                                      labelText: 'GPOC Name'
-                                  ),
+                        if(!acknowledged.contains(acknowledgedData1)){
+                          acknowledged.add(acknowledgedData1);
+                          notAcknowledged.remove(acknowledgedData1);
+                          setState(() {});
+                          showDialog(
+                              context: context,
+                              child: AlertDialog(
+                                content: Wrap(
+                                  children: <Widget>[
+                                    TextField(
+                                      decoration: InputDecoration(
+                                          labelText: 'GPOC Name'
+                                      ),
+                                      controller: myController,
+                                    ),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                          labelText: 'GPOC Number'
+                                      ),
+                                      controller: myController1,
+                                    ),
+                                  ],
                                 ),
-                                TextField(
-                                  decoration: InputDecoration(
-                                      labelText: 'GPOC Number'
-                                  ),
-                                ),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              RaisedButton(
-                                onPressed: () {},
-                                color: Colors.yellow,
-                                child: Text('Post='),
-                              )
-                            ],
-                          ),
-                          barrierDismissible: false,
-                        );
+                                actions: <Widget>[
+                                  RaisedButton(
+                                    onPressed: () {
+                                      final gpocName = myController.text;
+                                      final gpocContact = myController1.text;
+                                      Navigator.pop(context);
+                                    },
+                                    color: Colors.yellow,
+                                    child: Text('close'),
+                                  )
+                                ],
+                              ),
+                              barrierDismissible: false,
+                          );
+                        }
                       },
                     ),
                   )
@@ -224,7 +267,7 @@ class _DragTryState extends State<DragTry> {
             width: 292.0,
             height: 500.0,
             child: Card(
-              color: Color(0xffE5F2F1),
+              color: Color(0xff030423),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[

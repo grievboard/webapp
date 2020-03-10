@@ -18,6 +18,8 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
+  assets:
+    - images/GB.jpeg
+    - images/gb1.jpeg
   uses-material-design: true
 

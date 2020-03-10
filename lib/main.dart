@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:draggable/drag_try.dart';
 import 'package:firebase/firebase.dart' as Firebase;
+import 'drag_try.dart';
 import 'login.dart';
 
 Future<void> main() async {
@@ -15,6 +15,10 @@ Future<void> main() async {
       appId: '1:99869646234:web:2f481794a4a2bd49cd2e23',
     );
   }
-  runApp(MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.blue), home: DragTry()));
+  runApp(
+    MaterialApp(
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: DragTry(),
+    ),
+  );
 }

@@ -31,21 +31,7 @@ class _DragTryState extends State<DragTry> {
   final myController = TextEditingController();
   final myController1 = TextEditingController();
   var _fireStore = fireBase.firestore();
-  final List notAcknowledged = [
-    'problem1',
-    'problem2',
-    'problem3',
-    'problem4',
-    'problem15',
-    'problem16',
-    'problem17',
-    'problem18',
-    'problem19',
-    'problem10',
-    'problem11',
-    'problem12',
-    'problem13'
-  ];
+  final List notAcknowledged = [];
   final List description = [];
   final List location = [];
   final List acknowledged = [];
@@ -157,189 +143,169 @@ class _DragTryState extends State<DragTry> {
           ),
           Container(
             margin: EdgeInsets.fromLTRB(70.0, 110.0, 70.0, 110.0),
+            color: Color(0xFF030423),
             width: 292.0,
             height: 500.0,
-            child: Card(
-              color: Color(0xFF030423),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    height: 470,
-                    child: DragTarget(
-                      builder: (context, candidateData, rejectedData) {
-                        return ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: acknowledged.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Draggable(
-                              child: Container(
-                                margin: EdgeInsets.all(10.0),
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    {
-                                      showDialog(
-                                        context: context,
-                                        child: AlertDialog(
-                                          title: Text('${acknowledged[index]}'),
-                                          content: Wrap(
-                                            direction: Axis.vertical,
-                                            children: <Widget>[
-                                              Text("Hello World"),
-                                            ],
-                                          ),
-                                          actions: <Widget>[
-                                            RaisedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              color: Colors.yellow,
-                                              child: Text('Close'),
-                                            )
-                                          ],
-                                        ),
-                                        barrierDismissible: false,
-                                      );
-                                    }
-                                  },
-                                  child: Text('${acknowledged[index]}'),
-                                  color: Colors.white,
-                                  padding: EdgeInsets.all(10.0),
+            child: DragTarget(
+              builder: (context, candidateData, rejectedData) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: acknowledged.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Draggable(
+                      child: Container(
+                        margin: EdgeInsets.all(10.0),
+                        child: RaisedButton(
+                          onPressed: () {
+                            {
+                              showDialog(
+                                context: context,
+                                child: AlertDialog(
+                                  title: Text('${acknowledged[index]}'),
+                                  content: Wrap(
+                                    direction: Axis.vertical,
+                                    children: <Widget>[
+                                      Text("Hello World"),
+                                    ],
+                                  ),
+                                  actions: <Widget>[
+                                    RaisedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      color: Colors.yellow,
+                                      child: Text('Close'),
+                                    )
+                                  ],
                                 ),
-                              ),
-                              feedback: Material(
-                                elevation: 5.0,
-                                child: Container(
-                                  width: 284.0,
-                                  padding: const EdgeInsets.all(16.0),
-                                  color: Colors.yellow,
-                                  child: Text('${acknowledged[index]}'),
-                                ),
-                              ),
-                              onDragStarted: () {
-                                acknowledgedData2 = acknowledged[index];
-                                dragStatus = 'acknowledged';
-                              },
-                            );
+                                barrierDismissible: false,
+                              );
+                            }
                           },
-                        );
+                          child: Text('${acknowledged[index]}'),
+                          color: Colors.white,
+                          padding: EdgeInsets.all(10.0),
+                        ),
+                      ),
+                      feedback: Material(
+                        elevation: 5.0,
+                        child: Container(
+                          width: 284.0,
+                          padding: const EdgeInsets.all(16.0),
+                          color: Colors.yellow,
+                          child: Text('${acknowledged[index]}'),
+                        ),
+                      ),
+                      onDragStarted: () {
+                        acknowledgedData2 = acknowledged[index];
+                        dragStatus = 'acknowledged';
                       },
-                      onAccept: (data) {
-                        if (!acknowledged.contains(acknowledgedData1)) {
-                          acknowledged.add(acknowledgedData1);
-                          notAcknowledged.remove(acknowledgedData1);
-                          setState(() {});
-                          showDialog(
-                            context: context,
-                            child: AlertDialog(
-                              content: Wrap(
-                                children: <Widget>[
-                                  TextField(
-                                    decoration:
-                                        InputDecoration(labelText: 'GPOC Name'),
-                                    controller: myController,
-                                  ),
-                                  TextField(
-                                    decoration: InputDecoration(
-                                        labelText: 'GPOC Number'),
-                                    controller: myController1,
-                                  ),
-                                ],
-                              ),
-                              actions: <Widget>[
-                                RaisedButton(
-                                  onPressed: () {
-                                    final gpocName = myController.text;
-                                    final gpocContact = myController1.text;
-                                    Navigator.pop(context);
-                                  },
-                                  color: Colors.yellow,
-                                  child: Text('close'),
-                                )
-                              ],
-                            ),
-                            barrierDismissible: false,
-                          );
-                        }
-                      },
+                    );
+                  },
+                );
+              },
+              onAccept: (data) {
+                if (!acknowledged.contains(acknowledgedData1)) {
+                  acknowledged.add(acknowledgedData1);
+                  notAcknowledged.remove(acknowledgedData1);
+                  setState(() {});
+                  showDialog(
+                    context: context,
+                    child: AlertDialog(
+                      content: Wrap(
+                        children: <Widget>[
+                          TextField(
+                            decoration: InputDecoration(labelText: 'GPOC Name'),
+                            controller: myController,
+                          ),
+                          TextField(
+                            decoration:
+                                InputDecoration(labelText: 'GPOC Number'),
+                            controller: myController1,
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        RaisedButton(
+                          onPressed: () {
+                            final gpocName = myController.text;
+                            final gpocContact = myController1.text;
+                            Navigator.pop(context);
+                          },
+                          color: Colors.yellow,
+                          child: Text('close'),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
+                    barrierDismissible: false,
+                  );
+                }
+              },
             ),
+            //),
           ),
           Container(
             margin: EdgeInsets.fromLTRB(70.0, 110.0, 70.0, 110.0),
             width: 292.0,
             height: 500.0,
-            child: Card(
-              color: Color(0xff030423),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    height: 470,
-                    child: DragTarget(
-                      builder: (context, candidateData, rejectedData) {
-                        return ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: completed.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.all(10.0),
-                              child: RaisedButton(
-                                onPressed: () {
-                                  {
-                                    showDialog(
-                                      context: context,
-                                      child: AlertDialog(
-                                        title: Text('${completed[index]}'),
-                                        content: Wrap(
-                                          direction: Axis.vertical,
-                                          children: <Widget>[
-                                            Text("Hello World"),
-                                          ],
-                                        ),
-                                        actions: <Widget>[
-                                          RaisedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            color: Colors.yellow,
-                                            child: Text('Close'),
-                                          )
-                                        ],
-                                      ),
-                                      barrierDismissible: false,
-                                    );
-                                  }
-                                },
-                                child: Text('${completed[index]}'),
-                                color: Colors.white,
-                                padding: EdgeInsets.all(10.0),
+            color: Color(0xff030423),
+            child: DragTarget(
+              builder: (context, candidateData, rejectedData) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: completed.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.all(10.0),
+                      child: RaisedButton(
+                        color: Colors.green,
+                        onPressed: () {
+                          {
+                            showDialog(
+                              context: context,
+                              child: AlertDialog(
+                                title: Text('${completed[index]}'),
+                                content: Wrap(
+                                  direction: Axis.vertical,
+                                  children: <Widget>[
+                                    Text("Hello World"),
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  RaisedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    color: Colors.yellow,
+                                    child: Text('Close'),
+                                  )
+                                ],
                               ),
+                              barrierDismissible: false,
                             );
-                          },
-                        );
-                      },
-                      onAccept: (data) {
-                        if (dragStatus == 'notAcknowledged') {
-                          completed.add(acknowledgedData1);
-                          notAcknowledged.remove(acknowledgedData1);
-                        } else {
-                          completed.add(acknowledgedData2);
-                          acknowledged.remove(acknowledgedData2);
-                        }
-                        setState(() {});
-                        print("hello");
-                        return null;
-                      },
-                    ),
-                  )
-                ],
-              ),
+                          }
+                        },
+                        child: Text('${completed[index]}'),
+                        padding: EdgeInsets.all(10.0),
+                      ),
+                    );
+                  },
+                );
+              },
+              onAccept: (data) {
+                if (dragStatus == 'notAcknowledged') {
+                  completed.add(acknowledgedData1);
+                  notAcknowledged.remove(acknowledgedData1);
+                } else {
+                  completed.add(acknowledgedData2);
+                  acknowledged.remove(acknowledgedData2);
+                }
+                setState(() {});
+                print("hello");
+                return null;
+              },
             ),
           ),
         ],

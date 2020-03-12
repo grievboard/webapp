@@ -17,6 +17,7 @@ Future<void> main() async {
   }
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: DragTry(),
     ),

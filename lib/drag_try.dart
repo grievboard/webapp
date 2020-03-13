@@ -2,6 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fireBase;
 
+class User{
+  final String location;
+  final String description;
+  final String username;
+//  final String postId;
+//  final String name;
+//  final String ownerId;
+//  final String mediaUrl;
+//  final String status;
+//  final String gpocname;
+//  final String gpoccontact;
+//  final bool isPrivate;
+//  final List<String> consequences;
+//  final DateTime timestamp;
+//  final Map<String,bool> likes;
+  User(this.location,this.description,this.username);
+}
+
 class DragTry extends StatefulWidget {
   @override
   createState() => _DragTryState();
@@ -21,9 +39,10 @@ class _DragTryState extends State<DragTry> {
         .collection('userPosts')
         .get();
     for (var i = 0; i < data1.size; i++) {
-      notAcknowledged.add(data1.docs[i].get('username'));
-      description.add(data1.docs[i].get('description'));
-      location.add(data1.docs[i].get('location'));
+      var location = data1.docs[i].get('location');
+      var description = data1.docs[i].get('description');
+      var username = data1.docs[i].get('username');
+      notAcknowledged.add(User(location, description, username));
     }
     setState(() {});
   }
@@ -31,11 +50,9 @@ class _DragTryState extends State<DragTry> {
   final myController = TextEditingController();
   final myController1 = TextEditingController();
   var _fireStore = fireBase.firestore();
-  final List notAcknowledged = [];
-  final List description = [];
-  final List location = [];
-  final List acknowledged = [];
-  final List completed = [];
+  final List<User> notAcknowledged = [];
+  final List<User> acknowledged = [];
+  final List<User> completed = [];
   var acknowledgedData1, acknowledgedData2;
   var dragStatus;
 
@@ -60,13 +77,13 @@ class _DragTryState extends State<DragTry> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Draggable(
-                  child: Container(
+                  child: Padding(
                     child: RaisedButton(
                       onPressed: () {
                         showDialog(
                           context: context,
                           child: AlertDialog(
-                            title: Text('${notAcknowledged[index]}'),
+                            title: Text('${notAcknowledged[index].username}'),
                             content: Wrap(
                               direction: Axis.vertical,
                               children: <Widget>[
@@ -80,7 +97,7 @@ class _DragTryState extends State<DragTry> {
                                         SizedBox(
                                           height: 10.0,
                                         ),
-                                        Text('${description[index]}'),
+                                        Text('${notAcknowledged[index].description}'),
                                       ],
                                     ),
                                     padding: EdgeInsets.all(5.0),
@@ -96,7 +113,7 @@ class _DragTryState extends State<DragTry> {
                                         SizedBox(
                                           height: 10.0,
                                         ),
-                                        Text('${location[index]}'),
+                                        Text('${notAcknowledged[index].location}'),
                                       ],
                                     ),
                                     padding: EdgeInsets.all(5.0),
@@ -119,7 +136,7 @@ class _DragTryState extends State<DragTry> {
                         );
                       },
                       color: Colors.white,
-                      child: Text('${notAcknowledged[index]}'),
+                      child: Text('${notAcknowledged[index].username}'),
                     ),
                     padding: EdgeInsets.all(20.0),
                   ),
@@ -129,7 +146,7 @@ class _DragTryState extends State<DragTry> {
                       width: 284.0,
                       padding: const EdgeInsets.all(16.0),
                       color: Colors.yellow,
-                      child: Text(notAcknowledged[index]),
+                      child: Text(notAcknowledged[index].username),
                     ),
                   ),
                   childWhenDragging: Container(),
@@ -154,38 +171,67 @@ class _DragTryState extends State<DragTry> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Draggable(
-                      child: Container(
-                        margin: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: EdgeInsets.all(20.0),
                         child: RaisedButton(
                           onPressed: () {
-                            {
-                              showDialog(
-                                context: context,
-                                child: AlertDialog(
-                                  title: Text('${acknowledged[index]}'),
-                                  content: Wrap(
-                                    direction: Axis.vertical,
-                                    children: <Widget>[
-                                      Text("Hello World"),
-                                    ],
-                                  ),
-                                  actions: <Widget>[
-                                    RaisedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      color: Colors.yellow,
-                                      child: Text('Close'),
-                                    )
+                            showDialog(
+                              context: context,
+                              child: AlertDialog(
+                                title: Text('${acknowledged[index].username}'),
+                                content: Wrap(
+                                  direction: Axis.vertical,
+                                  children: <Widget>[
+                                    Card(
+                                      color: Color(0xFFFBFBFB),
+                                      child: Padding(
+                                        child: Wrap(
+                                          direction: Axis.vertical,
+                                          children: <Widget>[
+                                            Text("Description"),
+                                            SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            Text('${acknowledged[index].description}'),
+                                          ],
+                                        ),
+                                        padding: EdgeInsets.all(5.0),
+                                      ),
+                                    ),
+                                    Card(
+                                      color: Color(0xFFFBFBFB),
+                                      child: Padding(
+                                        child: Wrap(
+                                          direction: Axis.vertical,
+                                          children: <Widget>[
+                                            Text("Location"),
+                                            SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            Text('${acknowledged[index].location}'),
+                                          ],
+                                        ),
+                                        padding: EdgeInsets.all(5.0),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                barrierDismissible: false,
-                              );
-                            }
+                                actions: <Widget>[
+                                  RaisedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    color: Color(0xFF030423),
+                                    textColor: Colors.white,
+                                    child: Text('Close'),
+                                  )
+                                ],
+                              ),
+                              barrierDismissible: false,
+                            );
                           },
-                          child: Text('${acknowledged[index]}'),
                           color: Colors.white,
-                          padding: EdgeInsets.all(10.0),
+                          child: Text('${acknowledged[index].username}'),
                         ),
                       ),
                       feedback: Material(
@@ -194,7 +240,7 @@ class _DragTryState extends State<DragTry> {
                           width: 284.0,
                           padding: const EdgeInsets.all(16.0),
                           color: Colors.yellow,
-                          child: Text('${acknowledged[index]}'),
+                          child: Text('${acknowledged[index].username}'),
                         ),
                       ),
                       onDragStarted: () {
@@ -221,7 +267,7 @@ class _DragTryState extends State<DragTry> {
                           ),
                           TextField(
                             decoration:
-                                InputDecoration(labelText: 'GPOC Number'),
+                            InputDecoration(labelText: 'GPOC Number'),
                             controller: myController1,
                           ),
                         ],
@@ -266,11 +312,11 @@ class _DragTryState extends State<DragTry> {
                             showDialog(
                               context: context,
                               child: AlertDialog(
-                                title: Text('${completed[index]}'),
+                                title: Text('${completed[index].description}'),
                                 content: Wrap(
                                   direction: Axis.vertical,
                                   children: <Widget>[
-                                    Text("Hello World"),
+                                    Text('${completed[index].location}'),
                                   ],
                                 ),
                                 actions: <Widget>[
@@ -287,7 +333,7 @@ class _DragTryState extends State<DragTry> {
                             );
                           }
                         },
-                        child: Text('${completed[index]}'),
+                        child: Text('${completed[index].username}'),
                         padding: EdgeInsets.all(10.0),
                       ),
                     );

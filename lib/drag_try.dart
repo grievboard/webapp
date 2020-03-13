@@ -174,6 +174,7 @@ class _DragTryState extends State<DragTry> {
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
                         child: RaisedButton(
+                          color: Colors.orange,
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -230,7 +231,6 @@ class _DragTryState extends State<DragTry> {
                               barrierDismissible: false,
                             );
                           },
-                          color: Colors.white,
                           child: Text('${acknowledged[index].username}'),
                         ),
                       ),
@@ -306,7 +306,7 @@ class _DragTryState extends State<DragTry> {
                     return Container(
                       margin: EdgeInsets.all(10.0),
                       child: RaisedButton(
-                        color: Colors.green,
+                        color: Color(0xFF67FD64),
                         onPressed: () {
                           {
                             showDialog(

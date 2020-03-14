@@ -7,17 +7,18 @@ class User{
   final String description;
   final String username;
 //  final String postId;
-//  final String name;
+  final String title;
+  final String documentId;
 //  final String ownerId;
 //  final String mediaUrl;
 //  final String status;
-//  final String gpocname;
+  final String gpocName;
 //  final String gpoccontact;
 //  final bool isPrivate;
 //  final List<String> consequences;
 //  final DateTime timestamp;
 //  final Map<String,bool> likes;
-  User(this.location,this.description,this.username);
+  User(this.location, this.description, this.username, this.title, this.documentId, this.gpocName);
 }
 
 class DragTry extends StatefulWidget {
@@ -34,15 +35,16 @@ class _DragTryState extends State<DragTry> {
 
   Future getData() async {
     var data1 = await _fireStore
-        .collection('posts')
-        .doc('103575341949204712387')
-        .collection('userPosts')
+        .collection('NotAcknowledged')
         .get();
     for (var i = 0; i < data1.size; i++) {
       var location = data1.docs[i].get('location');
       var description = data1.docs[i].get('description');
       var username = data1.docs[i].get('username');
-      notAcknowledged.add(User(location, description, username));
+      var documentID = data1.docs[i].id;
+      var title = data1.docs[i].get('title');
+      var gpocName = data1.docs[i].get('gpocName');
+      notAcknowledged.add(User(location, description, username, title, documentID, gpocName));
     }
     setState(() {});
   }
@@ -209,7 +211,7 @@ class _DragTryState extends State<DragTry> {
                                             SizedBox(
                                               height: 10.0,
                                             ),
-                                            Text('${acknowledged[index].location}'),
+                                            Text('${acknowledged[index].documentId}'),
                                           ],
                                         ),
                                         padding: EdgeInsets.all(5.0),
@@ -277,6 +279,7 @@ class _DragTryState extends State<DragTry> {
                           onPressed: () {
                             final gpocName = myController.text;
                             final gpocContact = myController1.text;
+                            //_fireStore.collection('NotAcknowledged').doc('${acknowledgedData1.documentID}').update();
                             Navigator.pop(context);
                           },
                           color: Colors.yellow,

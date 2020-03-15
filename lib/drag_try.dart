@@ -58,8 +58,7 @@ class _DragTryState extends State<DragTry> {
       var username = data1.docs[i].get('username');
       var documentID = data1.docs[i].id;
       var name = data1.docs[i].get('name');
-      acknowledged
-          .add(User(location, description, username, name, documentID));
+      acknowledged.add(User(location, description, username, name, documentID));
     }
     setState(() {});
   }
@@ -167,14 +166,10 @@ class _DragTryState extends State<DragTry> {
                           barrierDismissible: false,
                         );
                       },
-                      color: Colors.white,
+                      color: Colors.red,
                       child: ListTile(
-                          title: Text('${notAcknowledged[index].username}'),
-                          leading: Icon(
-                            Icons.fiber_manual_record,
-                            size: 25.0,
-                            color: Colors.red,
-                          )),
+                        title: Text('${notAcknowledged[index].username}'),
+                      ),
                     ),
                     padding: EdgeInsets.all(20.0),
                   ),
@@ -212,7 +207,7 @@ class _DragTryState extends State<DragTry> {
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
                         child: RaisedButton(
-                          color: Colors.white,
+                          color: Colors.orange,
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -272,11 +267,6 @@ class _DragTryState extends State<DragTry> {
                             );
                           },
                           child: ListTile(
-                            leading: Icon(
-                              Icons.fiber_manual_record,
-                              size: 25.0,
-                              color: Colors.orange,
-                            ),
                             title: Text('${acknowledged[index].username}'),
                           ),
                         ),
@@ -314,7 +304,7 @@ class _DragTryState extends State<DragTry> {
                           ),
                           TextField(
                             decoration:
-                            InputDecoration(labelText: 'GPOC Number'),
+                                InputDecoration(labelText: 'GPOC Number'),
                             controller: myController1,
                           ),
                         ],
@@ -324,7 +314,6 @@ class _DragTryState extends State<DragTry> {
                           onPressed: () {
                             final gpocName = myController.text;
                             final gpocContact = myController1.text;
-                            //_fireStore.collection('NotAcknowledged').doc('${acknowledgedData1.documentID}').update();
                             Navigator.pop(context);
                           },
                           color: Colors.yellow,
@@ -359,7 +348,7 @@ class _DragTryState extends State<DragTry> {
                     return Container(
                       margin: EdgeInsets.all(10.0),
                       child: RaisedButton(
-                        color: Colors.white,
+                        color: Color(0xFF67FD64),
                         onPressed: () {
                           {
                             showDialog(
@@ -388,11 +377,6 @@ class _DragTryState extends State<DragTry> {
                         },
                         child: ListTile(
                           title: Text('${completed[index].username}'),
-                          leading: Icon(
-                            Icons.fiber_manual_record,
-                            color: Colors.green,
-                            size: 25.0,
-                          ),
                         ),
                         padding: EdgeInsets.all(10.0),
                       ),

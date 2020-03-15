@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fireBase;
 
-
-class User{
+class User {
   final String location;
   final String description;
   final String username;
@@ -19,7 +18,8 @@ class User{
 //  final List<String> consequences;
 //  final DateTime timestamp;
 //  final Map<String,bool> likes;
-  User(this.location, this.description, this.username, this.title, this.documentId);
+  User(this.location, this.description, this.username, this.title,
+      this.documentId);
 }
 
 class DragTry extends StatefulWidget {
@@ -35,16 +35,15 @@ class _DragTryState extends State<DragTry> {
   }
 
   Future getData() async {
-    var data1 = await _fireStore
-        .collection('notAck')
-        .get();
+    var data1 = await _fireStore.collection('notAck').get();
     for (var i = 0; i < data1.size; i++) {
       var location = data1.docs[i].get('location');
       var description = data1.docs[i].get('description');
       var username = data1.docs[i].get('username');
       var documentID = data1.docs[i].id;
       var title = data1.docs[i].get('title');
-      notAcknowledged.add(User(location, description, username, title, documentID));
+      notAcknowledged
+          .add(User(location, description, username, title, documentID));
     }
     setState(() {});
   }
@@ -99,7 +98,8 @@ class _DragTryState extends State<DragTry> {
                                         SizedBox(
                                           height: 10.0,
                                         ),
-                                        Text('${notAcknowledged[index].description}'),
+                                        Text(
+                                            '${notAcknowledged[index].description}'),
                                       ],
                                     ),
                                     padding: EdgeInsets.all(5.0),
@@ -115,7 +115,8 @@ class _DragTryState extends State<DragTry> {
                                         SizedBox(
                                           height: 10.0,
                                         ),
-                                        Text('${notAcknowledged[index].location}'),
+                                        Text(
+                                            '${notAcknowledged[index].location}'),
                                       ],
                                     ),
                                     padding: EdgeInsets.all(5.0),
@@ -139,13 +140,12 @@ class _DragTryState extends State<DragTry> {
                       },
                       color: Colors.white,
                       child: ListTile(
-                        title: Text('${notAcknowledged[index].username}'),
-                        leading: Icon(
-                          Icons.fiber_manual_record,
-                          size: 25.0,
-                          color: Colors.red,
-                        )
-                      ),
+                          title: Text('${notAcknowledged[index].username}'),
+                          leading: Icon(
+                            Icons.fiber_manual_record,
+                            size: 25.0,
+                            color: Colors.red,
+                          )),
                     ),
                     padding: EdgeInsets.all(20.0),
                   ),
@@ -202,7 +202,8 @@ class _DragTryState extends State<DragTry> {
                                             SizedBox(
                                               height: 10.0,
                                             ),
-                                            Text('${acknowledged[index].description}'),
+                                            Text(
+                                                '${acknowledged[index].description}'),
                                           ],
                                         ),
                                         padding: EdgeInsets.all(5.0),
@@ -218,7 +219,8 @@ class _DragTryState extends State<DragTry> {
                                             SizedBox(
                                               height: 10.0,
                                             ),
-                                            Text('${acknowledged[index].documentId}'),
+                                            Text(
+                                                '${acknowledged[index].documentId}'),
                                           ],
                                         ),
                                         padding: EdgeInsets.all(5.0),
@@ -276,7 +278,7 @@ class _DragTryState extends State<DragTry> {
                           ),
                           TextField(
                             decoration:
-                            InputDecoration(labelText: 'GPOC Number'),
+                                InputDecoration(labelText: 'GPOC Number'),
                             controller: myController1,
                           ),
                         ],
@@ -296,6 +298,11 @@ class _DragTryState extends State<DragTry> {
                     ),
                     barrierDismissible: false,
                   );
+                  _fireStore.collection('ack').add({
+                    'description': acknowledgedData1.description,
+                    'location': acknowledgedData1.location,
+                    'username': acknowledgedData1.username,
+                  });
                 }
               },
             ),

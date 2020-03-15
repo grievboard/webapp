@@ -7,7 +7,7 @@ class User {
   final String description;
   final String username;
 //  final String postId;
-  final String title;
+  final String name;
   final String documentId;
 //  final String ownerId;
 //  final String mediaUrl;
@@ -18,7 +18,7 @@ class User {
 //  final List<String> consequences;
 //  final DateTime timestamp;
 //  final Map<String,bool> likes;
-  User(this.location, this.description, this.username, this.title,
+  User(this.location, this.description, this.username, this.name,
       this.documentId);
 }
 
@@ -31,19 +31,48 @@ class _DragTryState extends State<DragTry> {
   @override
   void initState() {
     super.initState();
-    getData();
+    getnotAck();
+    getAck();
+    getDone();
   }
 
-  Future getData() async {
+  Future getnotAck() async {
     var data1 = await _fireStore.collection('notAck').get();
     for (var i = 0; i < data1.size; i++) {
       var location = data1.docs[i].get('location');
       var description = data1.docs[i].get('description');
       var username = data1.docs[i].get('username');
       var documentID = data1.docs[i].id;
-      var title = data1.docs[i].get('title');
+      var name = data1.docs[i].get('name');
       notAcknowledged
-          .add(User(location, description, username, title, documentID));
+          .add(User(location, description, username, name, documentID));
+    }
+    setState(() {});
+  }
+
+  Future getAck() async {
+    var data1 = await _fireStore.collection('ack').get();
+    for (var i = 0; i < data1.size; i++) {
+      var location = data1.docs[i].get('location');
+      var description = data1.docs[i].get('description');
+      var username = data1.docs[i].get('username');
+      var documentID = data1.docs[i].id;
+      var name = data1.docs[i].get('name');
+      acknowledged
+          .add(User(location, description, username, name, documentID));
+    }
+    setState(() {});
+  }
+
+  Future getDone() async {
+    var data1 = await _fireStore.collection('completed').get();
+    for (var i = 0; i < data1.size; i++) {
+      var location = data1.docs[i].get('location');
+      var description = data1.docs[i].get('description');
+      var username = data1.docs[i].get('username');
+      var documentID = data1.docs[i].id;
+      var name = data1.docs[i].get('name');
+      completed.add(User(location, description, username, name, documentID));
     }
     setState(() {});
   }
@@ -183,7 +212,7 @@ class _DragTryState extends State<DragTry> {
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
                         child: RaisedButton(
-                          color: Colors.orange,
+                          color: Colors.white,
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -242,7 +271,14 @@ class _DragTryState extends State<DragTry> {
                               barrierDismissible: false,
                             );
                           },
-                          child: Text('${acknowledged[index].username}'),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.fiber_manual_record,
+                              size: 25.0,
+                              color: Colors.orange,
+                            ),
+                            title: Text('${acknowledged[index].username}'),
+                          ),
                         ),
                       ),
                       feedback: Material(
@@ -278,7 +314,7 @@ class _DragTryState extends State<DragTry> {
                           ),
                           TextField(
                             decoration:
-                                InputDecoration(labelText: 'GPOC Number'),
+                            InputDecoration(labelText: 'GPOC Number'),
                             controller: myController1,
                           ),
                         ],
@@ -323,7 +359,7 @@ class _DragTryState extends State<DragTry> {
                     return Container(
                       margin: EdgeInsets.all(10.0),
                       child: RaisedButton(
-                        color: Color(0xFF67FD64),
+                        color: Colors.white,
                         onPressed: () {
                           {
                             showDialog(
@@ -350,7 +386,14 @@ class _DragTryState extends State<DragTry> {
                             );
                           }
                         },
-                        child: Text('${completed[index].username}'),
+                        child: ListTile(
+                          title: Text('${completed[index].username}'),
+                          leading: Icon(
+                            Icons.fiber_manual_record,
+                            color: Colors.green,
+                            size: 25.0,
+                          ),
+                        ),
                         padding: EdgeInsets.all(10.0),
                       ),
                     );
@@ -365,6 +408,11 @@ class _DragTryState extends State<DragTry> {
                   completed.add(acknowledgedData2);
                   acknowledged.remove(acknowledgedData2);
                 }
+                _fireStore.collection('completed').add({
+                  'description': acknowledgedData2.description,
+                  'location': acknowledgedData2.location,
+                  'username': acknowledgedData2.username,
+                });
                 setState(() {});
                 print("hello");
                 return null;

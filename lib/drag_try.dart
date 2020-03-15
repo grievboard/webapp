@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fireBase;
 
+
 class User{
   final String location;
   final String description;
@@ -12,13 +13,13 @@ class User{
 //  final String ownerId;
 //  final String mediaUrl;
 //  final String status;
-  final String gpocName;
+// final String gpocName;
 //  final String gpoccontact;
 //  final bool isPrivate;
 //  final List<String> consequences;
 //  final DateTime timestamp;
 //  final Map<String,bool> likes;
-  User(this.location, this.description, this.username, this.title, this.documentId, this.gpocName);
+  User(this.location, this.description, this.username, this.title, this.documentId);
 }
 
 class DragTry extends StatefulWidget {
@@ -35,7 +36,7 @@ class _DragTryState extends State<DragTry> {
 
   Future getData() async {
     var data1 = await _fireStore
-        .collection('NotAcknowledged')
+        .collection('notAck')
         .get();
     for (var i = 0; i < data1.size; i++) {
       var location = data1.docs[i].get('location');
@@ -43,8 +44,7 @@ class _DragTryState extends State<DragTry> {
       var username = data1.docs[i].get('username');
       var documentID = data1.docs[i].id;
       var title = data1.docs[i].get('title');
-      var gpocName = data1.docs[i].get('gpocName');
-      notAcknowledged.add(User(location, description, username, title, documentID, gpocName));
+      notAcknowledged.add(User(location, description, username, title, documentID));
     }
     setState(() {});
   }
@@ -138,7 +138,14 @@ class _DragTryState extends State<DragTry> {
                         );
                       },
                       color: Colors.white,
-                      child: Text('${notAcknowledged[index].username}'),
+                      child: ListTile(
+                        title: Text('${notAcknowledged[index].username}'),
+                        leading: Icon(
+                          Icons.fiber_manual_record,
+                          size: 25.0,
+                          color: Colors.red,
+                        )
+                      ),
                     ),
                     padding: EdgeInsets.all(20.0),
                   ),

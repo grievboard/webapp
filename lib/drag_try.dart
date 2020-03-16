@@ -1,25 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fireBase;
+import 'dart:developer';
 
 class User {
   final String location;
   final String description;
   final String username;
-//  final String postId;
+  final String postId;
   final String name;
-  final String documentId;
+  final String ownerId;
 //  final String ownerId;
 //  final String mediaUrl;
 //  final String status;
-// final String gpocName;
-//  final String gpoccontact;
+  final String gpocName;
+  final String gpocContact;
 //  final bool isPrivate;
 //  final List<String> consequences;
 //  final DateTime timestamp;
 //  final Map<String,bool> likes;
-  User(this.location, this.description, this.username, this.name,
-      this.documentId);
+  User(this.location, this.description, this.username, this.name, this.ownerId,
+      this.postId, this.gpocName, this.gpocContact);
 }
 
 class DragTry extends StatefulWidget {
@@ -42,10 +43,13 @@ class _DragTryState extends State<DragTry> {
       var location = data1.docs[i].get('location');
       var description = data1.docs[i].get('description');
       var username = data1.docs[i].get('username');
-      var documentID = data1.docs[i].id;
+      var ownerId = data1.docs[i].get('ownerId');
+      var postId = data1.docs[i].get('postId');
       var name = data1.docs[i].get('name');
-      notAcknowledged
-          .add(User(location, description, username, name, documentID));
+      var gpocName = data1.docs[i].get('gpocname');
+      var gpocContact = data1.docs[i].get('gpoccontact');
+      notAcknowledged.add(User(location, description, username, name, ownerId,
+          postId, gpocName, gpocContact));
     }
     setState(() {});
   }
@@ -56,9 +60,13 @@ class _DragTryState extends State<DragTry> {
       var location = data1.docs[i].get('location');
       var description = data1.docs[i].get('description');
       var username = data1.docs[i].get('username');
-      var documentID = data1.docs[i].id;
+      var ownerId = data1.docs[i].get('ownerId');
+      var postId = data1.docs[i].get('postId');
       var name = data1.docs[i].get('name');
-      acknowledged.add(User(location, description, username, name, documentID));
+      var gpocName = data1.docs[i].get('gpocname');
+      var gpocContact = data1.docs[i].get('gpoccontact');
+      acknowledged.add(User(location, description, username, name, ownerId,
+          postId, gpocName, gpocContact));
     }
     setState(() {});
   }
@@ -69,9 +77,13 @@ class _DragTryState extends State<DragTry> {
       var location = data1.docs[i].get('location');
       var description = data1.docs[i].get('description');
       var username = data1.docs[i].get('username');
-      var documentID = data1.docs[i].id;
+      var ownerId = data1.docs[i].get('ownerId');
+      var postId = data1.docs[i].get('postId');
       var name = data1.docs[i].get('name');
-      completed.add(User(location, description, username, name, documentID));
+      var gpocName = data1.docs[i].get('gpocname');
+      var gpocContact = data1.docs[i].get('gpoccontact');
+      completed.add(User(location, description, username, name, ownerId, postId,
+          gpocName, gpocContact));
     }
     setState(() {});
   }
@@ -84,6 +96,7 @@ class _DragTryState extends State<DragTry> {
   final List<User> completed = [];
   var acknowledgedData1, acknowledgedData2;
   var dragStatus;
+  var gpocName, gpocContact;
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +257,7 @@ class _DragTryState extends State<DragTry> {
                                               height: 10.0,
                                             ),
                                             Text(
-                                                '${acknowledged[index].documentId}'),
+                                                '${acknowledged[index].ownerId}'),
                                           ],
                                         ),
                                         padding: EdgeInsets.all(5.0),
@@ -304,7 +317,7 @@ class _DragTryState extends State<DragTry> {
                           ),
                           TextField(
                             decoration:
-                                InputDecoration(labelText: 'GPOC Number'),
+                            InputDecoration(labelText: 'GPOC Number'),
                             controller: myController1,
                           ),
                         ],
@@ -312,8 +325,15 @@ class _DragTryState extends State<DragTry> {
                       actions: <Widget>[
                         RaisedButton(
                           onPressed: () {
-                            final gpocName = myController.text;
-                            final gpocContact = myController1.text;
+                            var docId = _fireStore
+                                .collection('notAck')
+                                .doc('${acknowledgedData1.postId}')
+                                .id;
+                            _fireStore.collection('notAck').doc(docId).update(data: {
+                              'gpocname': '${myController.text}', 'gpoccontact': '${myController1.text}'
+                            });
+//                            gpocName = myController.text;
+//                            gpocContact = myController1.text;
                             Navigator.pop(context);
                           },
                           color: Colors.yellow,
@@ -323,11 +343,14 @@ class _DragTryState extends State<DragTry> {
                     ),
                     barrierDismissible: false,
                   );
-                  _fireStore.collection('ack').add({
-                    'description': acknowledgedData1.description,
-                    'location': acknowledgedData1.location,
-                    'username': acknowledgedData1.username,
-                  });
+                  //log('${acknowledgedData1.postId}');
+                  var docId = _fireStore
+                      .collection('notAck')
+                      .doc('${acknowledgedData1.postId}')
+                      .id;
+                  _fireStore.collection('notAck').doc(docId).update(data: {
+                    'status': 'acknowledged'
+                  }); //, 'gpocname':'$gpocName', 'gpoccontact':'$gpocContact'});
                 }
               },
             ),
